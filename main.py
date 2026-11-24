@@ -2,7 +2,8 @@
 """One Word From Your Ex - make.fun entry.
 
 Writes exactly one entry to the output file, nothing else.
-Gate: 1..24 chars, non-blank, UTF-8.
+Gate: 1..24 chars, non-blank, UTF-8. The judge reads the entry alone
+and compares entries two at a time, so the line must land on its own.
 """
 import os
 import sys
