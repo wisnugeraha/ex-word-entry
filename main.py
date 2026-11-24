@@ -12,13 +12,24 @@ MAX = 24
 OUT = os.path.join(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"), "entry.txt")
 
 
-def main() -> None:
-    text = ENTRY.strip()
-    if not (1 <= len(text) <= MAX):
+def emit(text: str, out: str = OUT) -> None:
+    if not (1 <= len(text) <= MAX) or not text.strip():
         sys.exit(f"entry failed gate ({len(text)} chars, max {MAX})")
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    with open(OUT, "w", encoding="utf-8") as f:
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, "w", encoding="utf-8") as f:
         f.write(text + "\n")
+
+
+def confirm(out: str = OUT) -> None:
+    with open(out, "rb") as f:
+        data = f.read()
+    if data.decode("utf-8").rstrip("\n") != ENTRY.strip():
+        sys.exit("confirm failed: disk copy differs from entry")
+
+
+def main() -> None:
+    emit(ENTRY.strip())
+    confirm(OUT)
 
 
 if __name__ == "__main__":
